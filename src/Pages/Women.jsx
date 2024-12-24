@@ -10,7 +10,7 @@ const Women = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://api.escuelajs.co/api/v1/categories/4/products?limit=18&offset=1"
+      "https://fakestoreapi.com/products/category/jewelery"
     );
     const json = await data.json();
     setItems(json);

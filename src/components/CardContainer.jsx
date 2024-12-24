@@ -10,9 +10,10 @@ const CardContainer = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://api.escuelajs.co/api/v1/categories/2/products?limit=10&offset=1"
+      "https://fakestoreapi.com/products"
     );
     const json = await data.json();
+    // console.log(json)
     setItems(json);
   };
 
