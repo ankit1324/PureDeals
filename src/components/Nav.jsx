@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useSelector} from "react-redux";
-
+import { useSelector } from "react-redux";
+import {removeItem} from "../Store/cartSlice.js";
+import {selectTotalPrice} from "../Store/cartSlice.js"
+import {useDispatch} from "react-redux";
 
 const Nav = () => {
-const [products ,setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const itemList = useSelector((state)=> state.cart);
-  // setProducts(itemList)
+  const itemList = useSelector((state) => state.cart);
+
+  const totalPrice = useSelector(selectTotalPrice);
+
+  const dispatch = useDispatch();
+
+  const handleRemove = (id) => {
+    dispatch(removeItem(id));
+  }
+
+  // Sync products state with itemList only when itemList changes
+  useEffect(() => {
+    setProducts(itemList);
+  }, [itemList]);
+
   console.log(itemList);
 
   return (
@@ -96,11 +111,11 @@ const [products ,setProducts] = useState([]);
                             <div className="flow-root">
                               <ul role="list" className="-my-6 divide-y divide-gray-200">
                                 {products.map((product) => (
-                                    <li key={product.id} className="flex py-6">
+                                    <li key={product?.id} className="flex py-6">
                                       <div className="h-24 w-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                                         <img
-                                            src={product.imageSrc}
-                                            alt={product.imageAlt}
+                                            src={product?.images[0]}
+                                            alt={"image"}
                                             className="h-full w-full object-cover"
                                         />
                                       </div>
@@ -108,16 +123,16 @@ const [products ,setProducts] = useState([]);
                                         <div>
                                           <div className="flex justify-between text-base font-medium text-gray-900">
                                             <h3>
-                                              <a href={product.href}>{product.name}</a>
+                                              <a href={product?.href}>{product?.title}</a>
                                             </h3>
-                                            <p className="ml-4">{product.price}</p>
+                                            <p className="ml-4">${product?.price}</p>
                                           </div>
-                                          <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                                          <p className="mt-1  text-sm text-gray-500">{product?.category?.name}</p>
                                         </div>
                                         <div className="flex flex-1 items-end justify-between text-sm">
-                                          <p className="text-gray-500">Qty {product.quantity}</p>
+                                          <p className="text-gray-500">Qty {product?.category?.id}</p>
                                           <div className="flex">
-                                            <button
+                                            <button onClick={() => handleRemove(product.id)}
                                                 type="button"
                                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                                             >
@@ -135,7 +150,7 @@ const [products ,setProducts] = useState([]);
                         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <p>Subtotal</p>
-                            <p>$262.00</p>
+                            <p>${totalPrice}</p>
                           </div>
                           <p className="mt-0.5 text-sm text-gray-500">
                             Shipping and taxes calculated at checkout.

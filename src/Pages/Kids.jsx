@@ -10,7 +10,7 @@ const Kids = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://fakestoreapi.com/products/category/men's clothing"
+      "https://api.escuelajs.co/api/v1/products"
     );
     const json = await data.json();
     setItems(json);

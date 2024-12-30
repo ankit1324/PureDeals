@@ -10,7 +10,7 @@ const CardContainer = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://fakestoreapi.com/products"
+      "https://api.escuelajs.co/api/v1/products"
     );
     const json = await data.json();
     // console.log(json)

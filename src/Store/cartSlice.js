@@ -1,39 +1,40 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
     name: "cart",
-    initialState: [{
-        id: 1,
-        name: "Throwback Hip Bag",
-        href: "#",
-        color: "Salmon",
-        price: "$90.00",
-        quantity: 1,
-        imageSrc:
-            "https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-        imageAlt:
-            "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-    },
+    initialState: [
         {
-            id: 2,
-            name: "Medium Stuff Satchel",
-            href: "#",
-            color: "Blue",
-            price: "$32.00",
-            quantity: 1,
-            imageSrc:
-                "https://tailwindui.com/plus/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-            imageAlt:
-                "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-        }],
+            id: 26,
+            title: "Sleek Mirror Finish Phone Case",
+            price: 27,
+            description:
+                "Enhance your smartphone's look with this ultra-sleek mirror finish phone case. Designed to offer style with protection, the case features a reflective surface that adds a touch of elegance while keeping your device safe from scratches and impacts. Perfect for those who love a minimalist and modern aesthetic.",
+            images: ["https://i.imgur.com/yb9UQKL.jpeg"],
+            creationAt: "2024-12-23T19:08:41.000Z",
+            updatedAt: "2024-12-23T19:08:41.000Z",
+            category: {
+                id: 2,
+                name: "Electronics",
+                image: "https://i.imgur.com/ZANVnHE.jpeg",
+                creationAt: "2024-12-23T19:08:41.000Z",
+                updatedAt: "2024-12-23T19:08:41.000Z",
+            },
+        },
+    ],
     reducers: {
         addItem: (state, action) => {
-            items.push(action.payload);
+            state.push(action.payload); // Properly push a new item to the state
         },
         removeItem: (state, action) => {
-            return items.remove(action.payload);
-        }
-    }
-})
-const {addItem, removeItem} = cartSlice.actions;
+            return state.filter((item) => item.id !== action.payload); // Filter out the item to remove
+        },
+    },
+});
+
+// Selector to calculate the total price of items in the cart
+export const selectTotalPrice = (state) => {
+    return state.cart.reduce((total, item) => total + item.price, 0);
+};
+
+export const { addItem, removeItem } = cartSlice.actions;
 export default cartSlice.reducer;
